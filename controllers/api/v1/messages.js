@@ -13,7 +13,7 @@ export const list = (req, res, next) => {
 }
 
 export const show = (req, res, next) => {
-    const message = messages.find((m) => m.id === req.params.id)
+    const message = messages.find((m) => String(m.id) === req.params.id)
 
     if (!message) {
         return res.status(404).json({
