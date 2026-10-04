@@ -1,10 +1,9 @@
 import express from 'express'
+import {list} from '../controllers/messages.js'
 
 const router = express.Router()
 
-/* GET users listing. */
-router.get('/', (req, res, next) => {
-  res.send('respond with a resource')
-})
+/* GET messages listing. */
+router.get('/', list)
 
 export default router
