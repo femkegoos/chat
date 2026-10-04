@@ -18,12 +18,12 @@ export const show = (req, res, next) => {
     if (!message) {
         return res.status(404).json({
             status: 'fail',
-            message: 'Message not found',
+            message: `Message ${req.params.id} not found`,
             data: {id: req.params.id}
         })
     }
     res.json({
         status: 'success',
-        message: 'GETTING message',
+        message: `GETTING message ${req.params.id}`,
         data: {message}
     })}
