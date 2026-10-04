@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "dev": "node --watch ./bin/www",
     "format": "prettier --write \"**/*.{js,json,md}\""
   },
   "dependencies": {
