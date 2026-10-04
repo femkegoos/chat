@@ -1,5 +1,5 @@
 import express from 'express'
-import {list, show, create, update} from '../controllers/api/v1/messages.js'
+import {list, show, create, update, destroy} from '../controllers/api/v1/messages.js'
 
 const router = express.Router()
 
@@ -12,4 +12,5 @@ router.post('/', create)
 
 router.put('/:id', update)
 
+router.delete('/:id', destroy)
 export default router

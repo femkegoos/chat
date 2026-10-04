@@ -3,7 +3,7 @@ let messages = [
     {_id: 2, user: 'pookie', text: 'Hey Hoi!'},
     {_id: 3, user: 'Kuromi', text: 'Hello Kitty!'},
 ];
-
+//een lijst van de berichten laten zien
 export const list = (req, res, next) => {
   res.json({
     status: 'success',
@@ -11,7 +11,7 @@ export const list = (req, res, next) => {
     data: {messages: messages}
   });
 }
-
+//De berichten laten zien op basis van de id
 export const show = (req, res, next) => {
     const message = messages.find((m) => String(m._id) === req.params.id)
 
@@ -52,7 +52,7 @@ export const show = (req, res, next) => {
         data: {message: newMessage}
     })
 }
-
+//Berichten kunnen updaten op basis van de id
 export const update = (req, res, next) => {
     const message = messages.find((m) => String(m._id) === req.params.id)
     const changes = req.body.message
@@ -78,4 +78,23 @@ export const update = (req, res, next) => {
         status: 'success',
         message: 'Message updated',
         data: {message: message}
+    })}
+
+    export const destroy = (req, res, next) => {
+    const index = messages.findIndex((m) => String(m._id) === req.params.id)
+
+    if (index === -1) {
+        return res.status(404).json({
+            status: 'fail',
+            message: `Message ${req.params.id} not found`,
+            data: {id: req.params.id}
+        })
+    }
+
+    messages.splice(index, 1)
+
+    res.json({
+        status: 'success',
+        message: `Message deleted`,
+        data: {message: {id: req.params.id}}
     })}
