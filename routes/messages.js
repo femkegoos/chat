@@ -1,5 +1,5 @@
 import express from 'express'
-import {list} from '../controllers/messages.js'
+import {list} from '../controllers/api/v1/messages.js'
 
 const router = express.Router()
 
