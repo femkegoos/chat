@@ -27,3 +27,28 @@ export const show = (req, res, next) => {
         message: `GETTING message ${req.params.id}`,
         data: {message: message}
     })}
+
+    export const create = (req, res, next) => {
+    const newData = req.body.message
+    if (!newData || !newData.user || !newData.text) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'User and text are required',
+            data: {message: null}
+        })
+    }
+
+    const newMessage = {
+        __v: 0,
+        _id: Date.now().toString(),
+        user: newData.user,
+        text: newData.text
+    }
+    messages.push(newMessage)
+    
+    res.json({
+        status: 'success',
+        message: 'CREATING message',
+        data: {message: newMessage}
+    })
+}
