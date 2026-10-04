@@ -52,3 +52,30 @@ export const show = (req, res, next) => {
         data: {message: newMessage}
     })
 }
+
+export const update = (req, res, next) => {
+    const message = messages.find((m) => String(m._id) === req.params.id)
+    const changes = req.body.message
+
+    if (!message) {
+        return res.status(404).json({
+            status: 'fail',
+            message: `Message ${req.params.id} not found`,
+            data: {id: req.params.id}
+        })
+    }
+    if (!changes) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'Message is required',
+            data: {message: null}
+        })
+    }
+    if (changes.user) message.user = changes.user
+    if (changes.text) message.text = changes.text
+
+    res.json({
+        status: 'success',
+        message: 'Message updated',
+        data: {message: message}
+    })}
