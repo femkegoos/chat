@@ -11,6 +11,8 @@ import routes from './config/routes.js'
 
 const app = express()
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+// voor in index.js
+mongoose.connect('mongodb://127.0.0.1:27017/messages');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))

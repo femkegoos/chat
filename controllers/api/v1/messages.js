@@ -1,12 +1,12 @@
-// Statische array als nepdatabank
-let messages = [
-  { _id: 1, user: 'Smiski', text: 'Moshi moshi!' },
-  { _id: 2, user: 'pookie', text: 'Hey Hoi!' },
-  { _id: 3, user: 'Kuromi', text: 'Hello Kitty!' }
-]
+
+import Message from "../../../models/api/v1/Message.js"
+
 
 // Geeft alle berichten terug, of enkel die van één user
-export const list = (req, res, next) => {
+export const list = async(req, res, next) => {
+
+  const messages = await Message.find({});
+  
   const { user } = req.query
 
   if (user) {
@@ -48,8 +48,34 @@ export const show = (req, res, next) => {
 }
 
 // Voegt een nieuw bericht toe aan de array
-export const create = (req, res, next) => {
-  const newData = req.body.message
+export const create = async(req, res, next) => {
+  
+try{
+   let message = new Message()
+  message.text = req.body.text;
+message.username = req.body.username;
+
+  await message.save();
+  const result = {
+    status: "succes",
+    data:{
+      message:message,
+    },
+  };
+  res.status(200).json(result);
+}
+catch (err){
+   const result = {
+    status: "error",
+    data:{
+      message:"oops",
+    },
+  };
+  res.status(500).json(result);
+
+}
+ const newData = req.body.message
+ 
 
   if (!newData || !newData.user || !newData.text) {
     return res.status(400).json({
@@ -103,7 +129,7 @@ export const update = (req, res, next) => {
     status: 'success',
     message: 'Message updated',
     data: { message: message }
-  })
+  }) 
 }
 
 // Verwijdert één bericht uit de array op basis van id
