@@ -102,36 +102,38 @@ catch (err){
 }
 
 // Past een bestaand bericht aan op basis van id
-export const update = (req, res, next) => {
-  const message = messages.find((m) => String(m._id) === req.params.id)
-  const changes = req.body.message
+export const update = async (req, res, next) => {
+  try {
+    const changes = req.body
 
-  if (!message) {
-    return res.status(404).json({
-      status: 'fail',
-      message: `Message ${req.params.id} not found`,
-      data: { id: req.params.id }
+    const message = await Message.findByIdAndUpdate(
+      req.params.id,
+      {
+        username: changes.username,
+        text: changes.text
+      },
+      { new: true }
+    )
+
+    if (!message) {
+      return res.status(404).json({
+        status: 'fail',
+        message: `Message ${req.params.id} not found`
+      })
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Message updated',
+      data: {
+        message: message
+      }
     })
+
+  } catch (err) {
+    next(err)
   }
-
-  if (!changes) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Message is required',
-      data: { message: null }
-    })
-  }
-
-  if (changes.user) message.user = changes.user
-  if (changes.text) message.text = changes.text
-
-  res.json({
-    status: 'success',
-    message: 'Message updated',
-    data: { message: message }
-  }) 
 }
-
 // Verwijdert één bericht uit de array op basis van id
 export const destroy = (req, res, next) => {
   const index = messages.findIndex((m) => String(m._id) === req.params.id)
