@@ -135,22 +135,23 @@ export const update = async (req, res, next) => {
   }
 }
 // Verwijdert één bericht uit de array op basis van id
-export const destroy = (req, res, next) => {
-  const index = messages.findIndex((m) => String(m._id) === req.params.id)
+export const destroy = async (req, res, next) => {
+  try {
+    const message = await Message.findByIdAndDelete(req.params.id)
 
-  if (index === -1) {
-    return res.status(404).json({
-      status: 'fail',
-      message: `Message ${req.params.id} not found`,
-      data: { id: req.params.id }
+    if (!message) {
+      return res.status(404).json({
+        status: 'fail',
+        message: `Message ${req.params.id} not found`
+      })
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Message deleted'
     })
+
+  } catch (err) {
+    next(err)
   }
-
-  messages.splice(index, 1)
-
-  res.json({
-    status: 'success',
-    message: 'Message deleted',
-    data: { message: { _id: req.params.id } }
-  })
 }
