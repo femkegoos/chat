@@ -1,4 +1,5 @@
 import express from 'express'
+import mongoose from 'mongoose'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import cookieParser from 'cookie-parser'
@@ -8,11 +9,13 @@ import 'dotenv/config'
 import createError from 'http-errors'
 import errorHandler from './middlewares/error-handler.js'
 import routes from './config/routes.js'
-
+import 'dotenv/config'
 const app = express()
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 // voor in index.js
-mongoose.connect('mongodb://127.0.0.1:27017/messages');
+mongoose.connect(process.env.MONGODB);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
